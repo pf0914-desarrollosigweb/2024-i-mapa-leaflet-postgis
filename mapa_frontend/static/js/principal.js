@@ -7,8 +7,8 @@ function iniciar() {
     // Objeto del mapa Leaflet
     var mapa = L.map('mapaid').setView([9.5, -84], 8);
 
-    // Capa base de Carto
-    positromap = L.tileLayer(
+    // Capa base de Carto Positron
+    positron = L.tileLayer(
         "https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png",
         {
           attribution:
@@ -17,6 +17,17 @@ function iniciar() {
           maxZoom: 20,
         }
     ).addTo(mapa);
+
+    // Capa base de Carto Darkmatter
+    darkmatter = L.tileLayer(
+        'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', 
+        {
+          attribution: 
+            '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+          subdomains: 'abcd',
+          maxZoom: 20
+        }
+    );    
 
     // Capa base de OSM
     osm = L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
@@ -36,9 +47,10 @@ function iniciar() {
 
     // Objeto de capas base
     var mapasbase = {
-      "Carto Positron": positromap,
-      OpenStreetMap: osm,
-      "ESRI WorldImagery": esriworld,
+      "Carto Positron": positron,
+      "Carto DarkMatter": darkmatter,
+      "OpenStreetMap": osm,
+      "ESRI WorldImagery": esriworld
     };
 
     // Control de capas
@@ -63,11 +75,39 @@ function iniciar() {
     const agregarObservacionesAlMapa = (json) => {
         // console.log(json)
 
-        // Se obtienen los datos en GeoJSON
-        observaciones = L.geoJSON(json, {}).addTo(mapa);
+        // Capa de observaciones
+        var observaciones = L.geoJSON(json, {});
 
-        // Se agrgan los datos GeoJSON al mapa
-        control_capas.addOverlay(observaciones, "Observaciones");      
+        // Capa de calor (heatmap)
+        coordenadas = json.features.map((feat) =>
+            feat.geometry.coordinates.reverse()
+        );
+        var observaciones_calor = L.heatLayer(coordenadas, {});
+
+        // Capa de observaciones agrupadas
+        var observaciones_agrupadas = L.markerClusterGroup({
+            spiderfyOnMaxZoom: true,
+        });
+        observaciones_agrupadas.addLayer(observaciones);
+
+        // Se añaden las capas al mapa
+        observaciones_calor.addTo(mapa);        
+        observaciones_agrupadas.addTo(mapa);
+        observaciones.addTo(mapa);
+        
+        // Se añaden las capas al control de capas
+        control_capas.addOverlay(
+            observaciones_calor,
+            "Capa de calor"
+        );
+        control_capas.addOverlay(
+            observaciones_agrupadas,
+            "Observaciones agrupadas"
+        );
+        control_capas.addOverlay(
+            observaciones, 
+            "Observaciones"
+        );
     }
 
     // Llamado a fetchGetRequest()

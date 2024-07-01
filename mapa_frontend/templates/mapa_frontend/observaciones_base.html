@@ -9,6 +9,15 @@
   integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
   crossorigin=""
 />
+<!-- Complemento Leaflet.markercluster -->
+<link
+  rel="stylesheet"
+  href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css"
+/>
+<link
+  rel="stylesheet"
+  href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css"
+/>
 <!-- Enlace a estilos del mapa -->
 <link rel="stylesheet" href="{% static 'css/estilos.css' %}">
 {% endblock %}
@@ -19,6 +28,14 @@
   src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
   integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
   crossorigin=""
+></script>
+<!-- Complemento Leaflet.markercluster -->
+<script 
+  src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster-src.js"
+></script>
+<!-- Complemento Leaflet.heat -->
+<script 
+  src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.heat/0.2.0/leaflet-heat.js"
 ></script>
 <!-- Código JS/Leaflet para crear y configurar el mapa -->
 <script src="{% static 'js/principal.js' %}"></script>
