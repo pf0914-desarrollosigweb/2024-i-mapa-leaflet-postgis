@@ -71,7 +71,7 @@ function iniciar() {
         }    
     }
 
-    // Función que agrega los datos GeoJSON al mapa
+    // Función que agrega los datos GeoJSON de observaciones al mapa
     const agregarObservacionesAlMapa = (json) => {
         // console.log(json)
 
@@ -110,6 +110,24 @@ function iniciar() {
         );
     }
 
+// Función que agrega los datos GeoJSON de registros de presencia al mapa
+const agregarRegistrosPresenciaAlMapa = (json) => {
+    // console.log(json)
+
+    // Capa de registros de presencia
+    var registros_presencia = L.geoJSON(json, {});
+
+    registros_presencia.addTo(mapa);
+    
+    // Se añaden las capas al control de capas
+    control_capas.addOverlay(
+        registros_presencia, 
+        "Registros de presencia"
+    );
+}    
+
     // Llamado a fetchGetRequest()
     fetchGetRequest('/api/v1/observaciones', agregarObservacionesAlMapa)
+
+    fetchGetRequest('/api/v1/registrospresencia', agregarRegistrosPresenciaAlMapa)
 }

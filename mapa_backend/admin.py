@@ -1,5 +1,6 @@
 from django.contrib.gis import admin
 from .models import Observacion
+from .models import RegistroPresencia
 
 
 # Register your models here.
@@ -14,4 +15,8 @@ class CustomGeoAdmin(admin.GISModelAdmin):
 
 @admin.register(Observacion)
 class ObservacionAdmin(CustomGeoAdmin):
+    pass
+
+@admin.register(RegistroPresencia)
+class RegistroPresenciaAdmin(CustomGeoAdmin):
     pass

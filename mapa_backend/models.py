@@ -11,3 +11,13 @@ class Observacion(models.Model):
 
     def __str__(self):
         return self.nombre
+    
+class RegistroPresencia(models.Model):
+    species = models.CharField(max_length=50, null=True)
+    sex = models.CharField(max_length=50, null=True)
+    age = models.IntegerField(null=True)
+    decimallongitude = models.FloatField(null=True)
+    decimallatitude = models.FloatField(null=True)
+    geom = models.PointField()
+
+    def __str__(self): return self.species
